@@ -30,7 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Create game objects (circles)
 	Color red{ 1, 0, 0, 1 };
 	Color green{ 0, 1, 0, 1 };
-	GameObject cRed, cGreen;
+	GameObject cRed, cGreen, towerObj;
 	cRed.Init(
 		static_cast<float>(AEGfxGetWindowWidth() - 400), 
 		static_cast<float>(AEGfxGetWindowHeight() / 2) - 100,
@@ -39,6 +39,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		400, 
 		static_cast<float>(AEGfxGetWindowHeight() / 2) - 100,
 		200, 200, green);
+	towerObj.Init(
+		600, 200,
+		50, 50,
+		blue
+	);
 
 	// Create Healthbar
 	HealthBar hp;
@@ -74,6 +79,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		cRed.Draw();
 		cGreen.Draw();
 		player.Draw();
+		towerObj.Draw();
 
 		// draw healthbar above player
 		hp.Draw();
@@ -89,6 +95,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	player.Destroy();
 	cRed.Destroy();
 	cGreen.Destroy();
+	towerObj.Destroy();
 
 	// free the system
 	AESysExit();
