@@ -2,29 +2,37 @@
 #include "AEEngine.h"
 #include "GameObject.h"
 
-// Declare functions you want to use
 
 namespace TowerHandler {
+
     struct ProjectileType
     {
+
         AEGfxTexture* sprite;
-        float damage, speed;
+        float damage;
+        float speed;
 
     };
 
     struct TowerDetails {
-        int level, ID;
+        int level;
+        int ID;
+        float range;
+        AEVec2 pos;
         ProjectileType projectile;
     };
 
     struct Tower : public GameObject
     {
         int tower_count; //amount of towers
+        bool isDragging{false};
+        float dragOffsetX{};
+        float dragOffsetY{};
         TowerDetails* details; //dynamic array of tower details
 
         void Init(float startX, float startY, float sizeX, float sizeY, Color c, int segcount = 30);
-        void Update(float dt);
-        Tower* CreateTower(int row, int col, int towerCount);
+        void Update(float mouseX, float mouseY, Tower &tower);
+        Tower* CreateTower(float startX, float startY, int towerID);
         void DestroyTower(Tower* tower);
     };
 

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "GameObject.h"
 #include "HealthBar.h"
+#include "Tower.h"
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
@@ -24,13 +25,32 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// - Initialization of your own variables go here -
 	// Init Game Vars
 	Color blue{ 0, 0, 1, 1 };
+	Color white{ 1, 1, 1, 1};
 	Player player;
 	player.Init(0.0f, 0.0f, 50, 50, blue);
+
+	//testing tower stuff
+	TowerHandler::Tower shopTower;
+	shopTower.Init(
+		600, 200,
+		50, 50,
+		white
+	);
+
+	TowerHandler::Tower towerObj;
+	towerObj.Init(
+		600, 200,
+		50, 50,
+		blue
+	);
+
+	int mouseX{}, mouseY{};
+	AEInputGetCursorPosition(&mouseX, &mouseY);
 
 	// Create game objects (circles)
 	Color red{ 1, 0, 0, 1 };
 	Color green{ 0, 1, 0, 1 };
-	GameObject cRed, cGreen, towerObj;
+	GameObject cRed, cGreen;
 	cRed.Init(
 		static_cast<float>(AEGfxGetWindowWidth() - 400), 
 		static_cast<float>(AEGfxGetWindowHeight() / 2) - 100,
@@ -39,11 +59,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		400, 
 		static_cast<float>(AEGfxGetWindowHeight() / 2) - 100,
 		200, 200, green);
-	towerObj.Init(
-		600, 200,
-		50, 50,
-		blue
-	);
 
 	// Create Healthbar
 	HealthBar hp;
@@ -63,6 +78,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 		// Update
 		player.Update(dt);
+		//shopTower.Update((float)mouseX, (float)mouseY, towerObj); //could use overloading for different update logic
+		towerObj.Update((float)mouseX, (float)mouseY, towerObj);
 
 		// overlap effects on player HP
 		hp.Update(player, cGreen, cRed, dt);
@@ -79,6 +96,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		cRed.Draw();
 		cGreen.Draw();
 		player.Draw();
+		shopTower.Draw();
 		towerObj.Draw();
 
 		// draw healthbar above player
